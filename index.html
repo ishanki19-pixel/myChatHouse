@@ -1,0 +1,91 @@
+<!DOCTYPE html5>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyChatPlace</title>
+</head>
+<body>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+     
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCHyIQcDVoWKjudLbFW66-mLJASYleM1Cs",
+    authDomain: "mychatplace-34175.firebaseapp.com",
+    projectId: "mychatplace-34175",
+
+    storageBucket: "mychatplace-34175.appspot.com",
+    messagingSenderId: "1000643927539",
+    appId: "1:1000643927539:web:74f778a1e19edbdcb38686",
+
+  };
+  
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var myName= prompt("Enter your Name") ;
+
+function sendMessage(){
+var message=document.getElementById("messaage").value();
+firebase.database().ref("messages").push().set({
+"sender": myName,
+"message": message
+});
+return false;
+}
+firebase.database().ref("messages").on("child_added",function (snapshot){
+var html="";
+html+="<li>";
+html+=snapshot.val().sender+":"+snapshot.val().message;
+html+="</li>"; 
+
+document.getElementById("messages").innerHTML+=html;
+});
+
+
+</script>
+
+<!-- Creating a form -->
+<form onsubmit="return sendMessage();">
+<input id="messaage" placeholder="Enter message" autocomplete="off">
+
+<input type="submit">
+
+
+</form>
+<!-- Creating a list -->
+<ul id="messages">
+
+    <script>
+        // listen for incoming messages
+        firebase.database().ref("messages").on("child_added", function (snapshot) {
+            var html = "";
+            // give each message a unique ID
+            html += "<li id='message-" + snapshot.key + "'>";
+            // show delete button if message is sent by me
+            if (snapshot.val().sender == myName) {
+                html += "<button data-id='" + snapshot.key + "' onclick='deleteMessage(this);'>";
+                    html += "Delete";
+                html += "</button>";
+            }
+            html += snapshot.val().sender + ": " + snapshot.val().message;
+            html += "</li>";
+     
+            document.getElementById("messages").innerHTML += html;
+        });
+    </script>
+
+
+</ul>
+</body>
+</html> 
