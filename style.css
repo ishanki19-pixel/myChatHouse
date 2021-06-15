@@ -1,0 +1,24 @@
+
+body
+{
+  background-color: #ffc947;
+  color: #8c0000;
+    text-align: center;
+}
+.talk{
+  text-align: center;
+}
+.image{
+  display: block;
+width: 50%;
+margin-left: auto;
+margin-right: auto;
+
+}
+.but{
+  width: 10px;
+  height: 10px;
+}
+#messages{
+  list-style-type: none;
+}
